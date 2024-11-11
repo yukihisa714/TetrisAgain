@@ -1,7 +1,7 @@
 const FPS = 60;
 
 
-const BLOCK_SIZE = 10;
+const BLOCK_SIZE = 40;
 const BLOCK_ROWS = 20;
 const BLOCK_COLS = 10;
 const FIELD_W = BLOCK_SIZE * BLOCK_COLS;

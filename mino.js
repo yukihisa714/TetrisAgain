@@ -31,30 +31,27 @@ class Mino {
 
     }
 
+    /**
+     * 移動するメソッド
+     * @param {number} x 
+     * @param {number} y 
+     */
     move(x, y) {
         this.x += x;
         this.y += y;
     }
 
+    /**
+     * ミノを90度回転するメソッド
+     * @param {number} r +1:時計回り -1:反時計回り
+     */
     rotate(r) {
+        // 回転を更新
         this.r += r;
-        const newShape = [];
-        for (let row = 0; row < this.size; row++) {
-            newShape[row] = [];
-            for (let col = 0; col < this.size; col++) {
-                newShape[row][col] = 0;
-            }
-        }
-        for (let row = 0; row < this.size; row++) {
-            for (let col = 0; col < this.size; col++) {
-                newShape[
-                    (1 - r) * (this.size - 1) / 2 + r * col
-                ][
-                    (1 + r) * (this.size - 1) / 2 - r * row
-                ] = this.shape[row][col];
-            }
-        }
 
+        const newShape = rotate2dArr(this.shape, r);
+
+        // 保存した形状を適用
         for (let row = 0; row < this.size; row++) {
             for (let col = 0; col < this.size; col++) {
                 this.shape[row][col] = newShape[row][col];
