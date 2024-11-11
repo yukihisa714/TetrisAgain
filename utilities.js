@@ -1,3 +1,22 @@
+const FPS = 60;
+
+
+const BLOCK_SIZE = 40;
+const BLOCK_ROWS = 20;
+const BLOCK_COLS = 10;
+const FIELD_W = BLOCK_SIZE * BLOCK_COLS;
+const FIELD_H = BLOCK_SIZE * BLOCK_ROWS;
+
+const COLORS = ["#aaa", "skyblue", "yellow", "green", "red", "blue", "orange", "purple"];
+
+
+const can = document.getElementById("canvas-field");
+const ctx = can.getContext("2d");
+can.width = FIELD_W;
+can.height = FIELD_H;
+can.style.background = COLORS[0];
+
+
 const keyStatus = {};
 document.addEventListener("keydown", e => {
     if (!keyStatus[e.key]) keyStatus[e.key] = 1;
@@ -15,27 +34,39 @@ function keyCount() {
 }
 
 
+const FIELD = [];
+for (let row = 0; row < BLOCK_ROWS; row++) {
+    FIELD[row] = [];
+    for (let col = 0; col < BLOCK_COLS; col++) {
+        FIELD[row][col] = 0;
+    }
+}
+
+
+
 /**
  * 正方形の２次元配列を回転する関数
  * @param {Array} arr 
  * @param {number} r +1,-1: 時計回り,反時計回り
  * @returns {Array} 回転した配列
  */
-function rotate2dArr(arr, r) {
+function getRotate2dArr(arr, r) {
+    if (r == 0) return arr;
+    const size = arr.length;
     const newArr = [];
-    for (let row = 0; row < arr.length; row++) {
+    for (let row = 0; row < size; row++) {
         newArr[row] = [];
-        for (let col = 0; col < arr.length; col++) {
+        for (let col = 0; col < size; col++) {
             newArr[row][col] = 0;
         }
     }
 
-    for (let row = 0; row < arr.length; row++) {
-        for (let col = 0; col < arr.length; col++) {
+    for (let row = 0; row < size; row++) {
+        for (let col = 0; col < size; col++) {
             newArr[
-                (1 - r) * (arr.length - 1) / 2 + r * col
+                (1 - r) * (size - 1) / 2 + r * col
             ][
-                (1 + r) * (arr.length - 1) / 2 - r * row
+                (1 + r) * (size - 1) / 2 - r * row
             ] = arr[row][col];
         }
     }
