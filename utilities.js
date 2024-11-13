@@ -33,6 +33,10 @@ function keyCount() {
     }
 }
 
+function checkKeyExe(keyName, sensitivity) {
+    return keyStatus[keyName] % ~~(FPS / sensitivity) == 1;
+}
+
 
 const FIELD = [];
 for (let row = 0; row < BLOCK_ROWS; row++) {
@@ -47,11 +51,11 @@ for (let row = 0; row < BLOCK_ROWS; row++) {
 /**
  * 正方形の２次元配列を回転する関数
  * @param {Array} arr 
- * @param {number} r +1,-1: 時計回り,反時計回り
+ * @param {number} r +1,-1: 時計回り,反時計回り 0:return
  * @returns {Array} 回転した配列
  */
 function getRotate2dArr(arr, r) {
-    if (r == 0) return arr;
+    if (Math.abs(r) !== 1) return arr;
     const size = arr.length;
     const newArr = [];
     for (let row = 0; row < size; row++) {
