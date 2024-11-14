@@ -66,13 +66,14 @@ class Mino {
 
 
     /**
-     * SuperRotationSystem
+     * Super Rotation System
      * @param {number} x 
      * @param {number} y 
      * @param {number} r 
      * @returns {{x: number, y: number, r: number}}
      */
     SRS(x, y, r) {
+        // Iミノのとき
         if (this.i === 1) {
             const r0 = this.r;
             const r1 = (r0 + r + 4) % 4;
@@ -107,6 +108,7 @@ class Mino {
             // console.log("false");
             return { x: 0, y: 0, r: 0 };
         }
+        // Iミノ以外のとき
         else {
             const p = ((this.r - 1) % 2) * r + ((2 - this.r) % 2);
             const q = 2 * (this.r % 2) - 1;
