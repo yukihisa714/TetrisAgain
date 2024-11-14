@@ -16,7 +16,6 @@ class Mino {
                 this.shape[row][col] = MINOS_SHAPE[i][row][col];
             }
         }
-        console.log(this.shape);
     }
 
     normalizeR() {
@@ -74,31 +73,67 @@ class Mino {
      * @returns {{x: number, y: number, r: number}}
      */
     SRS(x, y, r) {
-        const p = ((this.r - 1) % 2) * r + ((2 - this.r) % 2);
-        const q = 2 * (this.r % 2) - 1;
+        if (this.i === 1) {
+            const r0 = this.r;
+            const r1 = (r0 + r + 4) % 4;
 
-        if (this.checkCollision(x, y, r)) {
-            // console.log("SRS: 0");
-            return { x: x, y: y, r: r };
+            const a = ((r0 - 1) % 2) * ((r + 1) % 2 + 1) - r * (2 - (r1 / 2)) * Math.abs((r0 - 2) % 2);
+            const b = a + 3 * ((1 - r0) % 2 + r * (r0 % 2));
+            const c = a + 3 * r * Math.floor(r0 / 3);
+            const d = ((r + 1) / 2 + 1) * ((r0 - 2) % 2) - r * ((r0 - 1) % 2) * (2 - (r + 1) / 2);
+            const e = b - 3 * r * Math.floor(r0 / 3);
+            const f = d + 3 * (((2 - r0) % 2) + r * ((r0 - 1) % 2));
+
+            if (this.checkCollision(x, y, r)) {
+                // console.log("SRS: 0");
+                return { x: x, y: y, r: r };
+            }
+            if (this.checkCollision(x + a, y, r)) {
+                // console.log("SRS: 1");
+                return { x: x + a, y: y, r: r };
+            }
+            if (this.checkCollision(x + b, y, r)) {
+                // console.log("SRS: 2");
+                return { x: x + b, y: y, r: r };
+            }
+            if (this.checkCollision(x + c, y + d, r)) {
+                // console.log("SRS: 3");
+                return { x: x + c, y: y + d, r: r };
+            }
+            if (this.checkCollision(x + e, y + f, r)) {
+                // console.log("SRS: 4");
+                return { x: x + e, y: y + f, r: r };
+            }
+            // console.log("false");
+            return { x: 0, y: 0, r: 0 };
         }
-        if (this.checkCollision(x + p, y, r)) {
-            // console.log("SRS: 1");
-            return { x: x + p, y: y, r: r };
+        else {
+            const p = ((this.r - 1) % 2) * r + ((2 - this.r) % 2);
+            const q = 2 * (this.r % 2) - 1;
+
+            if (this.checkCollision(x, y, r)) {
+                // console.log("SRS: 0");
+                return { x: x, y: y, r: r };
+            }
+            if (this.checkCollision(x + p, y, r)) {
+                // console.log("SRS: 1");
+                return { x: x + p, y: y, r: r };
+            }
+            if (this.checkCollision(x + p, y + q, r)) {
+                // console.log("SRS: 2");
+                return { x: x + p, y: y + q, r: r };
+            }
+            if (this.checkCollision(x, y - 2 * q, r)) {
+                // console.log("SRS: 3");
+                return { x: x, y: y - 2 * q, r: r };
+            }
+            if (this.checkCollision(x + p, y - 2 * q, r)) {
+                // console.log("SRS: 4");
+                return { x: x + p, y: y - 2 * q, r: r };
+            }
+            // console.log("false");
+            return { x: 0, y: 0, r: 0 };
         }
-        if (this.checkCollision(x + p, y + q, r)) {
-            // console.log("SRS: 2");
-            return { x: x + p, y: y + q, r: r };
-        }
-        if (this.checkCollision(x, y - 2 * q, r)) {
-            // console.log("SRS: 3");
-            return { x: x, y: y - 2 * q, r: r };
-        }
-        if (this.checkCollision(x + p, y - 2 * q, r)) {
-            // console.log("SRS: 4");
-            return { x: x + p, y: y - 2 * q, r: r };
-        }
-        // console.log("false");
-        return { x: 0, y: 0, r: 0 };
     }
 
 
