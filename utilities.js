@@ -1,13 +1,15 @@
-const FPS = 60;
+const FPS = 30;
 
 
-const BLOCK_SIZE = 40;
+const BLOCK_SIZE = 10;
 const BLOCK_ROWS = 20;
 const BLOCK_COLS = 10;
 const FIELD_W = BLOCK_SIZE * BLOCK_COLS;
 const FIELD_H = BLOCK_SIZE * BLOCK_ROWS;
 
 const COLORS = ["#aaa", "skyblue", "yellow", "green", "red", "blue", "orange", "purple"];
+
+const NUM_OF_NEXT_MINOS = 6;
 
 
 const can = document.getElementById("canvas-field");
@@ -34,7 +36,7 @@ function keyCount() {
 }
 
 function checkKeyExe(keyName, sensitivity) {
-    return keyStatus[keyName] % ~~(FPS / sensitivity) == 1;
+    return keyStatus[keyName] % ~~(FPS / sensitivity) === 1;
 }
 
 

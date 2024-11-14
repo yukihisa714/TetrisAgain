@@ -1,14 +1,15 @@
 
 
 
+let minoOptions = [1, 2, 3, 4, 5, 6];
 
 
 
-FIELD[5][5] = 1;
+const MINOS = [
+    new Mino(1, 3, 0, 0, 5, true),
+    new Mino(3, 3, 0, 0, 5, true),
+];
 
-
-
-const mino = new Mino(3, 3, 0, 0, 5);
 
 
 function mainLoop() {
@@ -18,7 +19,10 @@ function mainLoop() {
     drawField();
 
 
-    mino.update();
+    MINOS[0].update();
+    if (MINOS[0].life === false) {
+        MINOS.shift();
+    }
 
     keyCount();
 }

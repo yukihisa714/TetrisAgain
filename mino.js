@@ -1,10 +1,12 @@
 class Mino {
-    constructor(i, x, y, r, sensitivity) {
+    constructor(i, x, y, r, sensitivity, life) {
         this.i = i;
         this.x = x;
         this.y = y;
-        this.r = (r % 4 + 4) % 4; // 必ず0~3 (負にはならない)
+        this.r = r;
+        this.normalizeR(); // rは必ず0~3 (負にはならない)
         this.sensitivity = sensitivity;
+        this.life = life;
 
         this.size = MINOS_SHAPE[i].length;
         this.shape = [];
@@ -18,7 +20,7 @@ class Mino {
     }
 
     normalizeR() {
-        this.r = (this.r + 4) % 4;
+        this.r = (this.r % 4 + 4) % 4;
     }
 
     draw() {
@@ -29,6 +31,17 @@ class Mino {
                 }
             }
         }
+    }
+
+    fixOnField() {
+        for (let row = 0; row < this.size; row++) {
+            for (let col = 0; col < this.size; col++) {
+                if (this.shape[row][col]) {
+                    FIELD[this.y + row][this.x + col] = this.shape[row][col];
+                }
+            }
+        }
+        this.life = false;
     }
 
     /**
@@ -43,8 +56,8 @@ class Mino {
         for (let row = 0; row < this.size; row++) {
             for (let col = 0; col < this.size; col++) {
                 if (nextShape[row][col]) {
-                    if (FIELD[row + this.y + y] == undefined) return false;
-                    if (FIELD[row + this.y + y][col + this.x + x] == undefined) return false;
+                    if (FIELD[row + this.y + y] === undefined) return false;
+                    if (FIELD[row + this.y + y][col + this.x + x] === undefined) return false;
                     if (FIELD[row + this.y + y][col + this.x + x]) return false;
                 }
             }
@@ -53,6 +66,13 @@ class Mino {
     }
 
 
+    /**
+     * SuperRotationSystem
+     * @param {number} x 
+     * @param {number} y 
+     * @param {number} r 
+     * @returns {{x: number, y: number, r: number}}
+     */
     SRS(x, y, r) {
         const p = ((this.r - 1) % 2) * r + ((2 - this.r) % 2);
         const q = 2 * (this.r % 2) - 1;
@@ -87,13 +107,12 @@ class Mino {
      * @param {number} x 移動
      * @param {number} y 移動
      * @param {number} r +1,-1: 時計,反時計回り
-     * @returns {boolean} 移動できたらtrue
      */
     move(x, y, r) {
         // if (!this.checkCollision(x, y, r)) return false;
         let newShape;
 
-        if (r == 0) {
+        if (r === 0) {
             if (this.checkCollision(x, y, r)) {
                 this.x += x;
                 this.y += y;
@@ -122,8 +141,14 @@ class Mino {
             }
         }
 
+    }
 
-        return true;
+
+    drop() {
+        while (this.checkCollision(0, 1, 0)) {
+            this.move(0, 1, 0);
+        }
+        this.fixOnField();
     }
 
 
@@ -147,6 +172,10 @@ class Mino {
         }
         if (checkKeyExe("x", this.sensitivity)) {
             this.move(0, 0, 1);
+        }
+
+        if (checkKeyExe(" ", this.sensitivity)) {
+            this.drop();
         }
 
 
