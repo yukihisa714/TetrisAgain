@@ -169,8 +169,6 @@ class Mino {
             newShape = getRotate2dArr(this.shape, SrsResults.r);
         }
 
-
-
         // 保存した形状を適用
         for (let row = 0; row < this.size; row++) {
             for (let col = 0; col < this.size; col++) {

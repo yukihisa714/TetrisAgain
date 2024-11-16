@@ -1,4 +1,4 @@
-
+let flame = 0;
 
 
 let minoOptions = [1, 2, 3, 4, 5, 6, 7];
@@ -11,7 +11,8 @@ refillMinos();
 function refillMinos() {
     while (MINOS.length < NUM_OF_NEXT_MINOS + 1) {
         const i = minoOptions.splice(Math.floor(Math.random() * minoOptions.length), 1)[0];
-        MINOS.push(new Mino(i, 3, 0, 0, 5, true));
+        const x = (BLOCK_COLS - MINOS_SHAPE[i].length) / 2 | 0;
+        MINOS.push(new Mino(i, x, 0, 0, 5, true));
         if (minoOptions.length === 0) {
             minoOptions = [1, 2, 3, 4, 5, 6, 7];
         }
@@ -39,6 +40,10 @@ function mainLoop() {
 
     drawField();
 
+    if (flame % (FPS - 1) === 0) {
+        MINOS[0].move(0, 1, 0);
+    }
+
 
     MINOS[0].update();
     if (MINOS[0].life === false) {
@@ -48,6 +53,7 @@ function mainLoop() {
     deleteLines();
 
     keyCount();
+    flame++;
 }
 
 setInterval(mainLoop, 1000 / FPS);
