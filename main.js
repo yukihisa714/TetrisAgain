@@ -1,12 +1,21 @@
 let flame = 0;
 
 
+document.addEventListener("keydown", e => {
+    if (e.key === "Shift") {
+        hold();
+    }
+});
+
+
+
 let minoOptions = [1, 2, 3, 4, 5, 6, 7];
-
-
 
 const MINOS = [];
 refillMinos();
+
+const HOLD = [];
+let canHold = true;
 
 function refillMinos() {
     while (MINOS.length < NUM_OF_NEXT_MINOS + 1) {
@@ -34,6 +43,22 @@ function deleteLines() {
 }
 
 
+function hold() {
+    if (canHold) {
+        if (HOLD.length === 0) {
+            HOLD[0] = MINOS.splice(0, 1)[0];
+            refillMinos();
+        }
+        else {
+            const tmp = MINOS[0]
+            MINOS[0] = HOLD[0];
+            HOLD[0] = tmp;
+        }
+        canHold = false;
+    }
+}
+
+
 function mainLoop() {
     ctx.clearRect(0, 0, FIELD_W, FIELD_H);
 
@@ -49,6 +74,7 @@ function mainLoop() {
     if (MINOS[0].life === false) {
         MINOS.shift();
         refillMinos();
+        canHold = true;
     }
     deleteLines();
 
