@@ -42,10 +42,7 @@ function checkKeyExe(keyName, sensitivity) {
 
 const FIELD = [];
 for (let row = 0; row < BLOCK_ROWS; row++) {
-    FIELD[row] = [];
-    for (let col = 0; col < BLOCK_COLS; col++) {
-        FIELD[row][col] = 0;
-    }
+    FIELD[row] = new Array(BLOCK_COLS).fill(0);
 }
 
 
@@ -61,10 +58,7 @@ function getRotate2dArr(arr, r) {
     const size = arr.length;
     const newArr = [];
     for (let row = 0; row < size; row++) {
-        newArr[row] = [];
-        for (let col = 0; col < size; col++) {
-            newArr[row][col] = 0;
-        }
+        newArr[row] = new Array(size);
     }
 
     for (let row = 0; row < size; row++) {
